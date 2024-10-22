@@ -1,0 +1,64 @@
+导入tkinter
+从tkinter导入文件对话框
+从tkinter导入消息框
+导入shutil，os
+将熊猫作为pd导入
+将numpy导入为np
+导入win32com.client
+导入matplotlib
+从matplotlib.font_manager导入FontProperties
+matplotlib.use('Agg')
+matplotlib.rcParams['font.family']='SimHei'
+
+从matplotlib.backends.backend_tkagg导入(FigureCanvasTkAgg，NavigationToolbar2Tk)
+#实现默认的Matplotlib键绑定。
+从matplotlib.backend_bases导入key_press_handler
+从matplotlib.figure导入图
+将numpy导入为np
+
+
+
+
+Def xlstoxlsx(文件名)：
+如果filename[-4：]=='.xls'：
+Excelapp=win32com.client.Dispatch('Excel.Application')
+workbook=Excelapp.Workbooks.Open(文件名)#文件名
+#转xlsx时：fileformat=51，
+#转xls时：fileformat=56，
+newfilename=文件名[：-4]+'.xlsx'
+工作簿。另存为(新文件名。取代("/"，"\\")，文件格式=51)
+workbook.close()
+Excelapp.Application.Quit()
+# 删除源文件
+os.remove(文件名)
+返回newfilename
+其他：
+返回文件名
+Def YFC(文件名，l0，h0)：
+# 预先获取该文件需要分成几个文件
+a=pd.read_excel(文件名，标题=无)
+a=np.array(A)
+D=[]
+对于范围(h0，A.shape[0])中的i：
+如果不是(D中的A[i，l0])：
+D.附加(A[i，l0])
+返回D
+
+
+Def m0()：
+filename=fileialog.askopenfilename()
+如果filename！=""：
+l0=int(w1.get())-1#明细表依据列的列数
+H0=int(w2.get())-1#首行的行数
+filename=xlstoxlsx(filename)#判断是否xlsx，否则转换
+D=YFC(filename，l0，h0)#获取需要分成哪些东西
+结果=messagebox.ask question('确认'，"将分成"+str(len(D))+"个文件，是否继续？")
+如果结果=="是"：
+对于范围内的i(len(D))：
+F=D[i]#分的东西
+filename1=文件名[：-4]+"_"+f+".xlsx"
+WB=openpyxl.load_workbook(文件名)
+sheet=wb.worksheets[0]
+for j in range(sheet.max_row-1，h0-1，-1)：#从大到小逐行删除
+                    cell = sheet.cell(row=j + 1, column=l0 + 1).value
+                 
